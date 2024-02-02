@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Évaluation de la Première Approche du Projet</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        .approach-section, .evaluation-section {
+            background: #fff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .figure, .remark {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .frame { margin: 20px; padding: 20px; border: 1px solid #000; }
+        .block { margin: 20px 0; padding: 15px; background-color: #f7f7f7; border-left: 5px solid #0057b8; }
+        .block h2 { margin-top: 0; }
+        ul { padding-left: 20px; }
+        ul li { margin-bottom: 10px; }
+        .remark {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        h2, h3 {
+            color: #333;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        .math-formula {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2em;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Première Approche -->
+        <div class="approach-section">
+            <h2>Première Approche : Interpolation du Nombre d'Onde \( k(\omega, z) \)</h2>
+            <!-- Contenu de la première approche... -->
+            <p>
+                L'objectif principal de cette étude est de pouvoir exprimer la relation de dispersion \( k(\omega) \) en tout point le long de l'axe des z à tout instant \( t \), sans qu'il y ait de dépendance vis-à-vis de \( r \). Cependant, un problème se pose : la valeur de \( \omega(t) \) le long de l'axe n'est pas connue à l'avance, ce qui complique l'analyse. Pour surmonter cette difficulté, la solution envisagée consiste à rechercher une relation entre \( k \) et \( \omega \) en chaque point de l'axe pour tous les \( \omega \) compris dans l'intervalle \([ \omega_{\text{min}}, \omega_{\text{max}} ]\). En d'autres termes, il s'agit d'ajuster \( k \) sur la grille définie par les axes \( z \) et \( \omega \), permettant ainsi une caractérisation précise de la relation de dispersion dans l'espace étudié. Un problème majeur rencontré est le coût élevé de cette méthode pour une grille de grande taille \( (r, z, t) \). Pour surmonter ce défi,*
+                nous envisageons de remplacer le processus de FIT par un réseau de neurones.
+            </p>
+            <p>
+                Les dix coefficients \( (a_i)_{1\leq i \leq 10} \) sont présumés être des fonctions continues de \( z \). Il est donc possible de les interpoler le long de \( z \) avec \( n \) coefficients \( (q_j)_{1\leq j \leq n} \) (où \( n \) varie approximativement entre 5 et 20). Cette méthode nous permet d'obtenir un tableau de dimensions \( (10, n) \), facilitant le calcul de FIT et \( k_w\_grid \).
+            </p>
+            <h3>Construction de la Base de Données</h3>
+            <p>
+                Le processus de construction de la base de données implique plusieurs étapes clés. Tout d'abord, nous fournissons à DoPPLIGHT les paramètres R et h. Après le calcul, nous enregistrons le FIT et interrompons le code. Ensuite, le code est exécuté pour une gamme variée
+                de valeurs de paramètres. Finalement, les coefficients qjqj​ sont interpolés séparément à l'aide d'un script Python.
+            </p>
+            <h3>Interpolation et Réseau de Prédiction</h3>
+            <p>
+            Pour la prédiction des coefficients d'interpolation, nous adoptons une approche novatrice. L'image ci-dessous illustre les valeurs de K dans le plan \( (k,w )\). Nous avons débuté par interpoler cette courbe avec un polynôme d'ordre 1 sous la forme \( p(ω,z)=a_1ω+a_2z+a_3 \)​, compte tenu de sa proximité avec un plan.
+            </p>
+            <div class="figure">
+            <img src="plot_3d_k(w,z)_1.png" alt="Interpolation de K dans le plan (k, w)">
+            <p>Figure : Interpolation de K dans le plan (k, w)</p>
+    
+        
+        </head>
+            <p>
+                On trace l'Évolution des coefficients du polynôme en fonction du rayon R :
+            </p>
+            <div class="figure">
+                <img src="plot_coef.png" alt="Évolution des coefficients du polynôme">
+                <p>Figure : Évolution des coefficients du polynôme en fonction du rayon R</p>
+            </div>
+            <p>
+                <div class="remark">
+                    <div class="remark-title"> </div>
+                Pour le fit de la relation de dispersion \( k(\omega) \) on utilise la formule :
+                <style>
+                    /* Autres styles ... */
+                
+                    .math-formula {
+                        font-family: 'Times New Roman', Times, serif;
+                        font-size: 1.2em; /* Ajustez la
+                
+                taille de la police ici */
+                text-align: center;
+                margin: 20px 0;
+                }
+                </style>
+                <!-- ... -->
+                <p class="math-formula">
+                    <br>
+                    \( \hat{k_{\omega,2}}(z) = \frac{\hat{\omega}(z)}{v c} \left[ \frac{x_1 (\hat{\omega}(z) \omega_0)^5 + \ldots + x_6 v}{x_1 (\hat{\omega}(z) \omega_0)^5 + x_2 (\hat{\omega}(z) \omega_0)^4 + \ldots + x_6} \right] \)
+                </p>
+
+          
+                    où les \( (x_i)_{i∈[1,10]} \)​ dépendent de \(z\), il y donc un fit \(k(ω)\) pour chaque point de l’axe zz, stocké dans le tableau 2D FIT (DoPPLIGHT).
+                </div>
+                
+               
+                </p>
+                <div class="figure">
+                <img src="xi_FIT(1).png" alt="Fit k(omega) pour chaque point de l'axe z">
+                <p>Figure : Fit \(k(ω)\) pour chaque point de l'axe \(z\)</p>
+                </div>
+                <div class="remark">
+        </div>
+
+        <style>
+            /* Autres styles... */
+        
+            .remark {
+                background-color: #f9f9f9; /* Couleur de fond du bloc de remarque */
+                border-left: 5px solid #2196F3; /* Bordure à gauche pour accentuer */
+                margin: 20px 0;
+                padding: 15px; /* Espace intérieur pour le texte */
+                font-style: italic; /* Style de police en italique pour remarque */
+            }
+        
+            .remark-title {
+                font-weight: bold; /* Titre en gras */
+                margin-bottom: 10px; /* Espace après le titre */
+            }
+        </style>
+        
+        <!-- Dans votre corps de document HTML -->
+        
+        <div class="remark">
+            <div class="remark-title">Remarque</div>
+            Au vu de la forme des coefficients de FIT le long de z, il est illusoire de les interpoler le long de \( z \) pour obtenir une relation générale.
+        </div>
+        <h2>Première Approche : Raison de rejet de la méthode</h2>
+        <div class="evaluation-section">
+            <strong>  
+            <ul>
+            <li>\(k(ω)\) est non linéaire pour \(ω\) petit.</li>
+            <li>Le courant \(I(ω)\) est une gaussienne, les faibles valeurs de \(ω\) ont une forte influence sur \(I\) et donc \(E\) et \(B\) .</li>
+            <li>Les imprécisions d’interpolations aux faibles valeurs de \(ω\) introduisent du bruit dans \(I\) et donc \(E\) et \( B \) .</li>
+            </ul>
+        </strong>
+        </div>
+        </div>
+
+        <!-- Section Principale -->
+    <div class="main-section">
+        <!-- Sous-section: Deuxième Approche -->
+        <div class="approach-subsection">
+            <h3> Transformation Logarithmique</h3>
+            <!-- Contenu de la deuxième approche... -->
+            <p>
+                Face aux erreurs significatives rencontrées avec le réseau de neurones lors de la première approche, 
+                nous avons procédé à une transformation logarithmique de la troisième composante des données d'entrée (w), 
+                pour améliorer l'apprentissage du modèle. Cette technique a été appliquée en raison de la nature particulière de la distribution des valeurs de w, qui s'étend sur plusieurs ordres de grandeur. La transformation logarithmique permet d'atténuer l'effet des écarts extrêmes et de réduire l'hétéroscédasticité des données.
+            </p>
+            <p>
+                Cette transformation a eu un impact positif sur la performance du modèle, avec une réduction notable de la fonction de perte MSE de près de la moitié. Toutefois, une erreur conséquente persistait, menant à l'abandon de cette approche pour la suite du projet.
+            </p>
+            <p>
+                Les détails de la normalisation et de la transformation appliquées pour l'entrainement du modèle sont les suivants :
+            </p>
+            <pre><code>
+            Normalisation des deux premières caractéristiques (aa et z) avec StandardScaler
+            
+            scaler_inputs_12 = StandardScaler()
+            inputs_scaled_12 = scaler_inputs_12.fit_transform(inputs[:, :2])
+            Transformation non linéaire (logarithme) de la troisième caractéristique (w)
+            
+            inputs_transformed_w = np.log(inputs[:, 2] + 1)
+            Combinaison des caractéristiques normalisées et transformées
+            
+            inputs_transformed = np.hstack((inputs_scaled_12, inputs_transformed_w.reshape(-1, 1)))
+            Normalisation des sorties (outputs) avec MinMaxScaler
+            
+            scaler_outputs = MinMaxScaler()
+            outputs_scaled = scaler_outputs.fit_transform(outputs.reshape(-1, 1))
+            </code></pre>
+            <p>
+                Ci-dessous, l'image illustre l'erreur d'interpolation logarithmique observée après application de cette méthode :
+            </p>
+            <div class="image-container">
+                <img src="erreurinterpLog(1).png" alt="Erreur d'interpolation logarithmique">
+            </div>
+            <div class="remark">
+                <div class="remark-title">Conclusion </div>
+                <p>
+                    Malgré la réduction de l'erreur, la persistance d'une erreur non négligeable a conduit à la recherche de méthodes alternatives pour améliorer davantage la précision du modèle.
+                </p>
+            </div>
+        </div>
+
+        <style>
+            .image-container {
+                display: inline-block;
+                width: 45%; /* Ajustez la largeur selon vos besoins */
+                margin: 5px; /* Marge entre les images */
+                text-align: center;
+            }
+    
+            .image-container img {
+                width: 100%; /* Pour que l'image s'ajuste à la largeur du conteneur */
+            }
+    
+            .caption {
+                font-size: 12px; /* Taille de police de la légende */
+            }
+        </style>
+        
+        <div class="minipage">
+            <div class="image-container">
+                <img src="predEr1.png" alt="Coupe (z, t) pour la valeur maximale de r de la grille pour une interpolation">
+            </div>
+            <p class="caption">Coupe (z, t) pour la valeur maximale de r de la grille pour une interpolation.</p>
+        </div>
+
+        <div class="minipage">
+            <div class="image-container">
+                <img src="Er2.png" alt="Coupe (z, t) de Er pour la valeur maximale de r de la grille pour un calcul DoPPLIGHT">
+            </div>
+            <p class="caption">Coupe (z, t) de Er pour la valeur maximale de r de la grille pour un calcul DoPPLIGHT.</p>
+        </div>
+
+        
+        <!-- D'autres sous-sections peuvent être ajoutées ici -->
+    </div>
+
+
+        <!-- Troisième Approche -->
+        <div class="approach-section">
+            <h2>Deuxième Approche : Amélioration de la Modélisation des Champs</h2>
+            <!-- Contenu de la troisième approche... -->
+            <p>
+                Dans cette approche, nous abordons le calcul des champs en examinant le fit \( k(\omega) \), utilisé principalement pour déterminer les champs électromagnétiques \( E \) et \( B \). Nous identifions que les coûts computationnels sont principalement dus au fit de \( k(\omega) \), et que calculer directement \( E \) et \( B \) peut être réalisé sans grande augmentation des coûts.
+            </p>
+            <p>
+                Notre objectif est de prédire les champs sans dépendre de la précision élevée nécessaire pour les petites valeurs de \( \omega \), en se concentrant sur les trois composantes \( (r, \theta, z) \).
+            </p>
+    
+            
+    
+            <p>
+                Nous observons que l'amplitude du champ varie uniquement avec \( r \), étant nulle pour \( r=0 \) et augmentant strictement ensuite. À \( r \) fixé, le champ se propage comme une onde le long de \( z \) avec le temps.
+            </p>
+    
+        <p>
+            Le modèle que nous proposons est le suivant :
+        </p>
+        <div class="math-formula">
+            \[
+                E_r(r,z,t) = \alpha(r) A(z,t) \cos(k(z,t)z - \omega(z,t)t + \phi)
+            \]
+        </div>
+        <p>
+            où \( \alpha(0) = 0 \) et la dérivée \( \alpha'(r) \) est strictement positive, ce qui implique que l'amplitude du champ croît avec \( r \).
+        </p>
+
+        <div class="frame">
+            <div class="minipage">
+                <div class="image-container">
+                    <img src="alpha_r.png" alt="alpha(r) pour les 8 premiers cas de la base de donnée">
+                </div>
+                <p class="caption">\( alpha(r) \) pour les 8 premiers cas de la base de donnée.</p>
+            </div>
+    
+            <div class="minipage">
+                <div class="image-container">
+                    <img src="interp_alpha_r.png" alt="Interpolation de alpha(r) pour un polynôme de degré 7">
+                </div>
+                <p class="caption">Interpolation de \( alpha(r) \) pour un polynôme de degré \( 7 \).</p>
+            </div>
+        </div>
+    
+        <!-- Deuxième série d'images (Prédiction des champs 7) -->
+        <div class="frame">
+            <div class="image-container centered-image">
+                <img src="err_alpha_r.png" alt="Distance en norme 2 entre la tranche du tableau Er(r,z,t) et Er(0,z,t) sur la grille (z,t)">
+                <p class="caption">Distance en norme 2 entre la tranche du tableau \( E_r(r,z,t) \) et \( E_r(0,z,t) \) sur la grille \( (z,t) \).</p>
+            </div>
+        </div>
+        <p>
+            Pour atteindre notre objectif de modélisation des champs, nous envisageons plusieurs méthodes :
+        </p>
+        <ul>
+            <div class="remark">
+            <div class="remark-title">
+            <li>Interpolation : Nous interpolons les valeurs de \( A \), \( k \), \( \omega \) et \( \phi \) à partir de l'ensemble des paramètres.</li>
+            <li>Réseau de neurones : Nous utilisons un réseau de neurones pour déduire \( A \), \( k \), \( \omega \) et \( \phi \) à partir des données disponibles.</li>
+            <li>Approche mixte : Nous combinons interpolation et réseau de neurones (RNA) pour déterminer les coefficients d'interpolation et prédire les champs.</li>
+        </div>
+        </ul>
+
+        <div class="frame">
+            <h1>Prédiction de champ avec le TCNN (Transposed-CNN)</h1>
+            <div class="block">
+              <h2>Objectif</h2>
+              <p>Prédire l'image de champ à partir de <em>r</em>, <em>a(z)</em> et <em>h(z)</em>.</p>
+            </div>
+            <div class="block">
+              <h2>Méthode</h2>
+              <ul>
+                <li><em>a(z)</em> et <em>h(z)</em> sont décrits respectivement par 3 et 2 degrés de liberté.</li>
+                <li>Nous choisissons de prendre les premiers 248 éléments le long de chaque axe <em>(z,t)</em>.</li>
+                <li>Le réseau est entraîné pour prédire une image de <em>(248,248)</em> à partir de 6 valeurs.</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="frame">
+            <h1>Construction du TCNN</h1>
+            <div class="block">
+              <h2>Architecture</h2>
+              <ul>
+                <li>Entrée (6)</li>
+                <li>Couches denses (64, 512, 31*31 ; 'elu')</li>
+                <li>Redimensionnement (31,31)</li>
+                <li>Couches ConvTranspose (32, 64, 128 ; (3,3), 'elu')</li>
+                <li>ConvTranspose (1 ; (3,3))</li>
+                <li>Sortie (248,248)</li>
+              </ul>
+              <p>Total : 620,546 paramètres.</p>
+            </div>
+          </div>
+          <div class="frame">
+            <h1>Résultats</h1>
+            
+            <div class="content">
+              <div class="list">
+                <ul>
+                  <li>4 coils</li>
+                  <li>1000 epochs</li>
+                  <li>MSE ~ 2e-4</li>
+                </ul>
+              </div>
+              <div class="image-large">
+                <img src="density_profiles.png" alt="Density Profiles">
+              </div>
+            </div>
+            
+            <div class="image-container">
+              <div class="image-box">
+                <img src="tcnn_elu_1radius4density_true3.png" alt="E_r(z,t) (DoPPLIGHT)">
+                <p class="caption">\(E_r(z,t)\) (DoPPLIGHT)</p>
+              </div>
+              <div class="image-box">
+                <img src="tcnn_elu_1radius4density_pred3.png" alt="E_r(z,t) (ELU Prediction)">
+                <p class="caption">\(E_r(z,t)\) (ELU Prediction)</p>
+              </div>
+              <div class="image-box">
+                <img src="tcnn_elu_1radius4density_err3.png" alt="Absolute error">
+                <p class="caption">(erreur Absolue)</p>
+              </div>
+            </div>
+            
+          </div>
+    </section>
+    
+    </div>
+        </div>
+    </div>
+</body>
+</html>

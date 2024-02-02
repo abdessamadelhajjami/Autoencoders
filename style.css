@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 25px; /* Change this value to your desired font size */
+    
+}
+
+header, footer {
+    background-color: #f1f1f1;
+    text-align: center;
+    padding: 10px 0;
+}
+
+nav {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    padding: 14px 20px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+section {
+    margin: 20px;
+}
+
+pre, code {
+    background-color: #eeeeee;
+    padding: 10px;
+    display: block;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}

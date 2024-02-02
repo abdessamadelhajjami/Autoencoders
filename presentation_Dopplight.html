@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Présentation</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Code de calcul DOPPLight</h1>
+    </header>
+
+    <nav>
+        <!-- Liens de navigation ou menu ici -->
+    </nav>
+    
+    <section id="introduction">
+        <h2>Introduction :</h2>
+        <p>Dopplight est un code de simulation numérique conçu pour modéliser les champs électromagnétiques générés par une bobine helicoïdale dans le contexte de l'expérience TNSA. Le code est structuré autour du fichier principal, 'DoPPLIGHT.m', qui définit les modèles, les sorties, les bobines, et les entrées. Il réalise une série de calculs, notamment la création de grilles, le calcul des champs électromagnétiques, et l'évolution des particules à travers le pousseur de Boris. Le module 'SheathHelix_Pierce_function' joue un rôle central en calculant les composantes des champs électriques et magnétiques autour du coil, indépendamment du faisceau de particules. Le code vise à fournir une représentation précise des phénomènes physiques impliqués dans l'expérience TNSA, et il offre des fonctionnalités pour l'analyse des résultats, y compris la génération et l'affichage du spectre des particules. Il se prouve plus vite qu'un code de type PIC qui rend son utilité plus valorisable.</p>
+        <h2>Architecture générale du code :</h2>
+        <!-- Replace "another_page.html" with the actual filename of the page with more pictures -->
+        <img src="archi_code.png" alt="Schéma du fonctionnement du code DoPPLIGHT">
+        <p>Voici un schéma plus concis sur le fonctionnement du code Dopplight :  </p>
+
+        <img src="SoPLIGHT2.png" alt="Schéma du fonctionnement du code DoPPLIGHT">
+        <p>Le module SheathHelix_Pierce_function est celui dédié au calcul principal des champs élétromagnétiques, dont les objectifs sont : </p>
+        <ul>
+            <li>Calcul des composants des champs électriques (Er, Eteta,
+                Ez) et magnétiques (Br, Bteta, Bz) autour du coil.</li>
+                <li>
+                    Résultats stockés dans la structure ‘champ coil‘, dans laquelle chaque
+                    composante du champ est traitée comme un attribut distinct.
+                </li>
+        </ul>
+        <img src="schema_calcul_champs.png" alt="Schéma : calcul des champs">
+        <img src="sheath_helix_1.png" alt="Schéma : calcul des champs">
+        <img src="sheath_helix_2.png" alt="Schéma : calcul des champs">
+        <p>Le module Boris Pusher est celui dédié au qui
+            effectue le calcul de la dynamique des particules : </p>
+        <img src="boris_pusher.png" alt="Inversion de la relation de dispersion dans le code matlab">
+        <p>Dans le but de s'affranchir du temps d'éxecution conséquent du code, on s'est fixé pour objectif l'optimisation des subroutines qui sont coûteuses dans le moduleet pour ce faire, on s'est proposé
+            de tracer un histogramme du temps d'éxécution des différentes portions du code pou se décider sur laquelle optimiser. </p> </li>
+                   
+        <br> <br> 
+        <img src="time.png" alt="Histograme de temps d'éxecution des subroutines du code matlab">
+        <p>On remarque que l'inversion de la relation de dispersion prouve très coûteuse, dont l'implémentation se résume par les étapes suivantes :</p>
+        <img src="disperstion.png" alt="Inversion de la relation de dispersion dans le code matlab">
+        <p>Avec r la 1ère composante spatiale et z la 2ème composante spatiale, FIT le tableau où est stocké les coefficients du polynôme interpolateur et k le nombre d'onde qu'on cherche à calculer.</p>
+        <br>
+
+
+    </section>
+
+    <h2>Références bibliographiques</h2>
+        <ol>
+            <li>
+                M. Bardon and al., Dopplight: an efficient model to study and design helical coil targets for
+laser-driven ion acceleration, To be submitted (2023).
+            </li>
+                <!-- Add more references as needed -->
+        </ol>
+    
+
+    <footer>
+        <p>©Projet CHP par : Canel, El Hajjami, Janani, Khaddari, Raki</p>
+        <p>Sous la direction de Jean-Luc Feugeas et Morad Ben Tayeb</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

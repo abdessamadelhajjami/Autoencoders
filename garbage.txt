@@ -1,0 +1,57 @@
+   <section id="formules">
+      <h2>Formules Scientifiques</h2>
+      <p>Voici l'équation quadratique :</p>
+      <p>\( ax^2 + bx + c = 0 \)</p>
+      <p>Et voici l'intégrale de \( e^x \) :</p>
+      <p>\[ \int e^x dx = e^x + C \]</p>
+    </section>
+  
+
+    <section id="code">
+        <h2>Extraits de Code</h2>
+        <pre><code>// Extrait de code ici</code></pre>
+    </section>
+
+    <section id="images">
+        <h2>Images et Graphiques</h2>
+        <img src="chemin_de_limage.jpg" alt="Description de l'image">
+    </section>
+
+    <section id="animations">
+        <h2>Animations</h2>
+        <!-- Intégration d'animations ici -->
+    </section>
+
+    <section id="Approches">
+        <h2>Pistes</h2>
+        <ol>
+        <li>1ère approche : interpolation du nombre d'onde k(w,z)</li>
+        <img src="1_approche.png" alt="Interpolation d'ordre 1">
+        <p>Le polynôme qui interpole la fonction nombre d’onde s'écrit : \(f(w, z) = \sum_{k=0}^{n} a_k z^k\)</p>
+        <img src="interp.png" alt="Interpolation des coefficients a_k"><p>
+        <p>Le résultat de cette interpolation est illustré sur les figures suivantes :</p>
+        <img src="erruer_interp.png" alt="Erreur d'interpolation">
+        <p>Vu la forme des coefficients (ci-dessous), il prouve vain d'essayer d'interpoler le long de l'axe z pour obtenir une formule générale.</p>
+        <img src="xi_FIT(1).png" alt="Illustration de la non régularité des coefficients">
+        <li>2ème approche : interpolation sous échelle logarithmique</li>
+        <p>Pour accentuer les plus petites/grandes pulsations on passe en échelle logarithmique, dont l'erreur d'interpolation est tracée dans le plan (w,z) : </p>
+
+        <img src="erreur_interp_log.png" alt="Erreur d'interpolation en échelle logarithmique">
+       <p>Même si l'erreur semble satisfaisante, cette approche pose des problèmes :</p> 
+        <ul>
+            <li>k(w) est non linéaire pour w petit, où w est la pulsation.</li>
+            <li>Le courant I (ω) est une gaussienne, les faibles valeurs de ω ont une forte influence sur I et donc sur les champs E et B.</li>
+            <li>Les imprécisions d’interpolations aux faibles valeurs de ω du bruit dans I et donc E et B</li>
+        </ul>
+        <p>On aimerait s'affranchir de cette contrainte sur la précision requise pour les faibles valeurs en w &rarr; 3ème approche </p>
+        <li>3ème approche : Prédire les champs E et B directement sur la grille (r,z,t)</li>
+        <p>On crée une base de données des géométries de coils différentes, voir figure suivante :</p>
+        <img src="dbcoil.png" alt="data base coil">
+        <p>Un premier essai de prédiction donne pour le cas de rayon constant :</p>
+        <img src="Er1_z.png" alt="data base coil">
+        <p>et pour le cas de rayon variable :</p>
+        <img src="Er2_z.png" alt="data base coil">
+    </ol>
+    </section>
+    
+ 
